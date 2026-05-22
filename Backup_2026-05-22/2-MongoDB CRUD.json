@@ -1,0 +1,101 @@
+{
+  "updatedAt": "2026-05-20T12:23:16.201Z",
+  "createdAt": "2026-05-20T12:03:13.156Z",
+  "id": "LDVjso5iRZUHOCr0",
+  "name": "2-MongoDB CRUD",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -272,
+        -16
+      ],
+      "id": "b744fa16-2e1d-4c69-be8e-e7261876153f",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "jsCode": "return {\n  name:\"henil\", age:20, nationality:\"india\"\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -64,
+        -16
+      ],
+      "id": "a7d0945d-cab4-4297-9f07-8d728a6d1388",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "collection": "table1",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1.2,
+      "position": [
+        160,
+        -16
+      ],
+      "id": "c273461e-34e0-4bb4-805f-ebab5381b517",
+      "name": "Find documents",
+      "credentials": {
+        "mongoDb": {
+          "id": "cLS7Zh3KAAvf80QW",
+          "name": "MongoDB account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Find documents",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "3f16284e-df44-4ce7-b749-301464a8a4ff",
+  "activeVersionId": null,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2026-05-20T12:03:13.156Z",
+      "createdAt": "2026-05-20T12:03:13.156Z",
+      "role": "workflow:owner",
+      "workflowId": "LDVjso5iRZUHOCr0",
+      "projectId": "aB23mWtfYZXjDuh2"
+    }
+  ],
+  "activeVersion": null,
+  "tags": []
+}
