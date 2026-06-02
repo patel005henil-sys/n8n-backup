@@ -1,0 +1,72 @@
+{
+  "updatedAt": "2026-05-25T08:14:52.269Z",
+  "createdAt": "2026-05-25T08:11:39.018Z",
+  "id": "O6IiNn3Zq5w7bykS",
+  "name": "Backup8",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "f9189f85-2005-4578-aec3-4d2cba178f03",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "table": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        }
+      },
+      "type": "n8n-nodes-base.mySql",
+      "typeVersion": 2.5,
+      "position": [
+        208,
+        0
+      ],
+      "id": "529c47c0-5854-4018-9a14-4bfcd95b84b0",
+      "name": "Insert rows in a table"
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Insert rows in a table",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "baa56145-565b-487e-a187-76c7c1f28d28",
+  "activeVersionId": null,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2026-05-25T08:11:39.018Z",
+      "createdAt": "2026-05-25T08:11:39.018Z",
+      "role": "workflow:owner",
+      "workflowId": "O6IiNn3Zq5w7bykS",
+      "projectId": "aB23mWtfYZXjDuh2"
+    }
+  ],
+  "activeVersion": null,
+  "tags": []
+}
