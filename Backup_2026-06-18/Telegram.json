@@ -1,0 +1,196 @@
+{
+  "updatedAt": "2026-06-02T12:47:59.581Z",
+  "createdAt": "2026-06-02T11:49:52.973Z",
+  "id": "LBjmuaBOdSBXXhD9",
+  "name": "Telegram",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "bfbb8bf1-3282-4ecd-ada1-7fd5a0d85c41",
+      "name": "Telegram Trigger",
+      "webhookId": "b83e8239-d879-44c7-82f0-8f2992782f60",
+      "credentials": {
+        "telegramApi": {
+          "id": "9C2lhFkO1dDqn17O",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message.text }}",
+        "options": {
+          "systemMessage": "You are helpful assistant you will keep your responses précised on point and you will give me  every answer to the query into 3 to 4 lines itself, don’t type large paragraphs be the best expert in  the world and give me answer See towords it that you are a bit chit chatty"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "43dfb792-09bd-44f5-86a9-0a4daec07def",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.message.chat.id }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        256,
+        224
+      ],
+      "id": "34ffd75a-c103-44aa-98f8-aa339e587527",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolCalculator",
+      "typeVersion": 1,
+      "position": [
+        432,
+        224
+      ],
+      "id": "fdb5a514-ceb1-42af-9cd6-c80eed3c3a84",
+      "name": "Calculator"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        560,
+        0
+      ],
+      "id": "58c2787b-7b1e-4cc1-803d-7aec5aeee408",
+      "name": "Send a text message",
+      "webhookId": "10e9fd13-f4ce-4087-8189-688325311d3f",
+      "credentials": {
+        "telegramApi": {
+          "id": "9C2lhFkO1dDqn17O",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        80,
+        208
+      ],
+      "id": "f81ab165-c69b-4ab6-9945-8efd300b11d0",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "0Kn7Rw59CMrfHS75",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculator": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "573ea251-a80e-446e-9329-726cdf0e4758",
+  "activeVersionId": null,
+  "triggerCount": 1,
+  "shared": [
+    {
+      "updatedAt": "2026-06-02T11:49:52.973Z",
+      "createdAt": "2026-06-02T11:49:52.973Z",
+      "role": "workflow:owner",
+      "workflowId": "LBjmuaBOdSBXXhD9",
+      "projectId": "aB23mWtfYZXjDuh2"
+    }
+  ],
+  "activeVersion": null,
+  "tags": []
+}
