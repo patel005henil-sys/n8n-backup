@@ -1,0 +1,246 @@
+{
+  "updatedAt": "2026-06-09T12:55:36.644Z",
+  "createdAt": "2026-06-09T12:43:39.695Z",
+  "id": "eCEsM1FVzdFJkCit",
+  "name": "UnsecureFAQs",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        192,
+        80
+      ],
+      "id": "4291e6d2-213f-4c2b-bb0c-b262e2fed2f3",
+      "name": "When chat message received",
+      "webhookId": "3047efb6-3ad7-4d88-b406-193b9adfa116"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        400,
+        80
+      ],
+      "id": "a2546427-1a71-46e8-812a-86f9f1996dc2",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        128,
+        288
+      ],
+      "id": "adb4b8c8-ad8c-4ace-8aae-f08494ad978e",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "uQ3DlYVgLCJz3dgs",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        320,
+        288
+      ],
+      "id": "e317c4f4-29bc-407c-8ad9-f46451f68433",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "This sheet contains all approved FAQs.\n\nYou must answer ONLY using information found in this sheet.\n\nIf the answer cannot be found exactly or with high confidence in the FAQ sheet:\n1. Do not guess.\n2. Do not use your own knowledge.\n3. Ask the user for their contact number.\n4. Once the user provides a contact number, save:\n   - Contact Number\n   - Original Question\n5. Respond:\n   \"Thank you. Your question has been recorded and our team will contact you shortly.\"2",
+        "documentId": {
+          "__rl": true,
+          "value": "1QYMY2vfzr4YyC-JvkeH7fErw6XN6O0aa1D7k73atCnI",
+          "mode": "list",
+          "cachedResultName": "SK-INFOSOFT",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1QYMY2vfzr4YyC-JvkeH7fErw6XN6O0aa1D7k73atCnI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1154470149,
+          "mode": "list",
+          "cachedResultName": "FAQs",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1QYMY2vfzr4YyC-JvkeH7fErw6XN6O0aa1D7k73atCnI/edit#gid=1154470149"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        480,
+        288
+      ],
+      "id": "cf976fd2-d0f2-4784-8835-4648bcdfdd74",
+      "name": "Get row(s) in sheet in Google Sheets1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "toVNbsIMfq0IAXnS",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1QYMY2vfzr4YyC-JvkeH7fErw6XN6O0aa1D7k73atCnI",
+          "mode": "list",
+          "cachedResultName": "SK-INFOSOFT",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1QYMY2vfzr4YyC-JvkeH7fErw6XN6O0aa1D7k73atCnI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1248696086,
+          "mode": "list",
+          "cachedResultName": "New",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1QYMY2vfzr4YyC-JvkeH7fErw6XN6O0aa1D7k73atCnI/edit#gid=1248696086"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Contact No.": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Contact_No_', ``, 'string') }}",
+            "Questions": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Questions', ``, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Contact No.",
+              "displayName": "Contact No.",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Questions",
+              "displayName": "Questions",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        688,
+        288
+      ],
+      "id": "67b1c062-24cb-4c5a-96c4-1601290da043",
+      "name": "Append row in sheet in Google Sheets1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "toVNbsIMfq0IAXnS",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet in Google Sheets1": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet in Google Sheets1": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "66ad79f4-e226-44be-8e79-cda5959e1ca1",
+  "activeVersionId": null,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2026-06-09T12:43:39.695Z",
+      "createdAt": "2026-06-09T12:43:39.695Z",
+      "role": "workflow:owner",
+      "workflowId": "eCEsM1FVzdFJkCit",
+      "projectId": "aB23mWtfYZXjDuh2"
+    }
+  ],
+  "activeVersion": null,
+  "tags": []
+}
