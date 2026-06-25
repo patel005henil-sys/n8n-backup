@@ -1,0 +1,155 @@
+{
+  "updatedAt": "2026-06-15T11:14:06.682Z",
+  "createdAt": "2026-06-11T12:50:46.380Z",
+  "id": "vk2ovj0lzr7uQ45Z",
+  "name": "SerpAPI",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "a8ded5f0-910b-4522-aedc-bd036d392688",
+      "name": "When chat message received",
+      "webhookId": "378857f7-effa-416a-b394-ae14302bebda"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "364f9aec-bab7-4a53-8f1a-0bfd136ad4be",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        80,
+        208
+      ],
+      "id": "0cd01083-a035-4da1-8edf-c0650a09da03",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "uQ3DlYVgLCJz3dgs",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        256,
+        208
+      ],
+      "id": "a60076a7-5a51-495c-bb72-e0bbabf98eb7",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "locationSettings": {},
+        "languageSettings": {},
+        "searchOptions": {},
+        "timeFilters": {},
+        "pagination": {},
+        "advancedOptions": {},
+        "requestOptions": {}
+      },
+      "type": "@searchapi/n8n-nodes-searchapi.searchApiTool",
+      "typeVersion": 1,
+      "position": [
+        448,
+        208
+      ],
+      "id": "9e3c01af-4f34-4d21-a7be-ac1b50ed5ed8",
+      "name": "Search google in SearchApi"
+    }
+  ],
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search google in SearchApi": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "a04e99a4-7aac-4b8a-aa2d-c38931477fd8",
+  "activeVersionId": null,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2026-06-11T12:50:46.380Z",
+      "createdAt": "2026-06-11T12:50:46.380Z",
+      "role": "workflow:owner",
+      "workflowId": "vk2ovj0lzr7uQ45Z",
+      "projectId": "aB23mWtfYZXjDuh2"
+    }
+  ],
+  "activeVersion": null,
+  "tags": []
+}
