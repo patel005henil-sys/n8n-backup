@@ -1,0 +1,337 @@
+{
+  "updatedAt": "2026-05-28T07:06:05.259Z",
+  "createdAt": "2026-05-27T11:40:17.300Z",
+  "id": "fl7RLldJN3f6NwrG",
+  "name": "5-Sentiment Feedback",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Feedback Form",
+        "formDescription": "Give Honest Feedback And Required To Fill The Form",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Name",
+              "placeholder": "Enter Your Name",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Email",
+              "fieldType": "email",
+              "placeholder": "Enter Your Email",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Feedback",
+              "placeholder": "Write An Honest Review Here",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Course Detail",
+              "fieldType": "radio",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "5 Days Internship"
+                  },
+                  {
+                    "option": "50 Days Internship"
+                  }
+                ]
+              },
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.5,
+      "position": [
+        0,
+        0
+      ],
+      "id": "fd153039-ee8f-487a-891c-bc597c1b508c",
+      "name": "On form submission",
+      "webhookId": "ad4c3f9c-1dad-4f69-8a01-0629b4a120f4"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1RLvf_YGtOTKI10JbKB-VX9kMKpN7ZyLt8aGwQbIdgEc",
+          "mode": "list",
+          "cachedResultName": "Feedback",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1RLvf_YGtOTKI10JbKB-VX9kMKpN7ZyLt8aGwQbIdgEc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1RLvf_YGtOTKI10JbKB-VX9kMKpN7ZyLt8aGwQbIdgEc/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $json.Name }}",
+            "Email": "={{ $json.Email }}",
+            "Feedback": "={{ $json.Feedback }}",
+            "Course Detail": "={{ $json['Course Detail'] }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Feedback",
+              "displayName": "Feedback",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Course Detail",
+              "displayName": "Course Detail",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        208,
+        0
+      ],
+      "id": "68e39b0c-6c10-45c9-aed8-7b37b606bf84",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "toVNbsIMfq0IAXnS",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "inputText": "={{ $json.Feedback }}",
+        "options": {
+          "categories": "Positive, Negative"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.sentimentAnalysis",
+      "typeVersion": 1.1,
+      "position": [
+        416,
+        0
+      ],
+      "id": "62c30fa2-fad1-466f-b868-e7e15f1f4a77",
+      "name": "Sentiment Analysis"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        352,
+        240
+      ],
+      "id": "af707fc0-c45a-49e7-8619-a41b03e2c86e",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "0Kn7Rw59CMrfHS75",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Append row in sheet').item.json.Email }}",
+        "subject": "={{ $json.subject }}",
+        "emailType": "text",
+        "message": "={{ $json.message }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1184,
+        -32
+      ],
+      "id": "630c4f77-a7df-4e82-8e0e-adae2a728cc7",
+      "name": "Send a message",
+      "webhookId": "efc5c98c-8098-4a57-8162-f24a5a1fe6aa",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "yYMvekRnF5HWlkdY",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\n  \"to\":{{ $('Append row in sheet').item.json.Email }} ,\n  \"subject\": \"Thank You for Your Valuable Feedback\",\n  \"message\": \"Dear {{ $('Append row in sheet').item.json.Name }},\\n\\nThank you for your valuable feedback regarding our {{ $('Append row in sheet').item.json['Course Detail'] }} program.\\n\\nWe truly appreciate your honest and positive review. As a token of appreciation, we are pleased to offer you a 20% discount on your next course with us.\\n\\nAdditionally, candidates from our 50 Days Internship program may also receive recruitment opportunities based on performance and eligibility.\\n\\nWe look forward to supporting your learning journey.\\n\\nBest Regards,\\nTeam\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        848,
+        -112
+      ],
+      "id": "90a68074-c1a3-4d05-aa52-58abbd31ede4",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\n  \"to\":{{ $('Append row in sheet').item.json.Email }} ,\n  \"subject\": \"Thank You for Your Honest Feedback\",\n  \"message\": \"Dear {{ $('Append row in sheet').item.json.Name }},\\n\\nFirst of all, we sincerely apologize if your experience with our {{ $('Append row in sheet').item.json['Course Detail'] }} program did not meet your expectations.\\n\\nThank you for taking the time to share your honest feedback with us. Your suggestions and concerns are extremely valuable, and they help us improve our teaching methods, learning support, mentorship quality, and overall student experience.\\n\\nWe are continuously working on improving our training strategy to provide better practical learning and career opportunities for every student.\\n\\nAs a gesture of appreciation and to give you a better experience with us, we would like to offer you an exclusive 30% discount if you wish to join our 50 Days Internship Program.\\n\\nWe truly hope to have another opportunity to support your learning journey and help you achieve your career goals.\\n\\nThank you once again for your valuable feedback.\\n\\nBest Regards,\\nTeam\"",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        848,
+        96
+      ],
+      "id": "5690706b-365c-4c30-9ed2-f83a4ea7057e",
+      "name": "Edit Fields1"
+    }
+  ],
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Sentiment Analysis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Sentiment Analysis",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sentiment Analysis": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        []
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "5b08e990-0ab3-4c8b-93be-c6b201719b98",
+  "activeVersionId": null,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2026-05-27T11:40:17.300Z",
+      "createdAt": "2026-05-27T11:40:17.300Z",
+      "role": "workflow:owner",
+      "workflowId": "fl7RLldJN3f6NwrG",
+      "projectId": "aB23mWtfYZXjDuh2"
+    }
+  ],
+  "activeVersion": null,
+  "tags": []
+}
