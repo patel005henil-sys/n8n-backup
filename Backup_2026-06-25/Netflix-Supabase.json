@@ -1,0 +1,401 @@
+{
+  "updatedAt": "2026-06-20T09:30:07.359Z",
+  "createdAt": "2026-06-19T11:47:55.249Z",
+  "id": "Z96IeY1nRQ6cVJHb",
+  "name": "Netflix-Supabase",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        416,
+        0
+      ],
+      "id": "80f879f4-39e1-4c71-badf-83617ab7a288",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "jsCode": "return [{\n  json: {\n    keys: Object.keys(items[0].json),\n    data: items[0].json\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        624,
+        0
+      ],
+      "id": "84735cad-3cf2-4062-a69e-5582888e6423",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "triggerOn": "specificFile",
+        "fileToWatch": {
+          "__rl": true,
+          "value": "1eSnxvrZsbhMNWkSlVjRzgjNN9tvNDMY_",
+          "mode": "list",
+          "cachedResultName": "netflix_titles_sample.csv",
+          "cachedResultUrl": "https://drive.google.com/file/d/1eSnxvrZsbhMNWkSlVjRzgjNN9tvNDMY_/view?usp=drivesdk"
+        }
+      },
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "fcabdfdc-297b-4e7a-88e2-b348e921279f",
+      "name": "Google Drive Trigger",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "FR1ZSJyaUbBPgg7J",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "1eSnxvrZsbhMNWkSlVjRzgjNN9tvNDMY_",
+          "mode": "list",
+          "cachedResultName": "netflix_titles_sample.csv",
+          "cachedResultUrl": "https://drive.google.com/file/d/1eSnxvrZsbhMNWkSlVjRzgjNN9tvNDMY_/view?usp=drivesdk"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        208,
+        0
+      ],
+      "id": "ebd71f7e-aa02-4ae8-993e-4b98b1fa515f",
+      "name": "Download file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "FR1ZSJyaUbBPgg7J",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        16,
+        288
+      ],
+      "id": "027a5a95-5486-4614-83d1-1ad0a78c72e5",
+      "name": "When chat message received",
+      "webhookId": "e3e17c58-22e3-4df6-92e2-bdf65dcbf526"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        224,
+        288
+      ],
+      "id": "1ddf18b6-ef03-4cf7-8519-a1cc355c9ee4",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        96,
+        496
+      ],
+      "id": "f18a25ad-736e-40b6-b48f-b36598fac885",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "PSQno9RbJucPAubR",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        256,
+        496
+      ],
+      "id": "fb697095-d000-4a89-8217-6c7b4718d85b",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "tableId": "documents",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "content",
+              "fieldValue": "={{ $json.content }}"
+            },
+            {
+              "fieldId": "metadata",
+              "fieldValue": "={{ $json.metadata }}"
+            },
+            {
+              "fieldId": "show_id",
+              "fieldValue": "={{ $json.show_id }}"
+            },
+            {
+              "fieldId": "type",
+              "fieldValue": "={{ $json.type }}"
+            },
+            {
+              "fieldId": "title",
+              "fieldValue": "={{ $json.title }}"
+            },
+            {
+              "fieldId": "director",
+              "fieldValue": "={{ $json.director }}"
+            },
+            {
+              "fieldId": "actors",
+              "fieldValue": "={{ $json.actors }}"
+            },
+            {
+              "fieldId": "country",
+              "fieldValue": "={{ $json.country }}"
+            },
+            {
+              "fieldId": "date_added",
+              "fieldValue": "={{ $json.date_added }}"
+            },
+            {
+              "fieldId": "release_year",
+              "fieldValue": "={{ $json.release_year }}"
+            },
+            {
+              "fieldId": "rating",
+              "fieldValue": "={{ $json.rating }}"
+            },
+            {
+              "fieldId": "duration",
+              "fieldValue": "={{ $json.duration }}"
+            },
+            {
+              "fieldId": "listed_in",
+              "fieldValue": "={{ $json.listed_in }}"
+            },
+            {
+              "fieldId": "description",
+              "fieldValue": "={{ $json.description }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        832,
+        0
+      ],
+      "id": "7b131ba3-b3d5-4a60-9e50-985689b4f5ed",
+      "name": "Create a row",
+      "credentials": {
+        "supabaseApi": {
+          "id": "jVAzX8JBHTYOIm2O",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolDescription": "Use this tool to search and retrieve relevant information from the Netflix Dataset stored in Supabase.\n\nThe dataset contains:\n\n* show_id\n* type\n* title\n* director\n* actors\n* country\n* date_added\n* release_year\n* rating\n* duration\n* listed_in\n* description\n\nAlways use this tool when the user asks about:\n\n* Movies\n* TV Shows\n* Netflix titles\n* Directors\n* Actors\n* Genres\n* Countries\n* Release years\n* Ratings\n* Duration\n* Content descriptions\n* Recommendations based on Netflix data\n\nSearch the dataset before answering.\n\nBase answers only on retrieved records.\n\nDo not use your own knowledge about movies or TV shows.\n\nIf a title is not found in the retrieved records, clearly state that it was not found in the dataset.\n\nFor questions about a specific movie or TV show, search using the title name.\n\nFor questions about directors, actors, genres, countries, ratings, or years, retrieve relevant records first and then answer.",
+        "tableName": {
+          "__rl": true,
+          "value": "documents",
+          "mode": "list",
+          "cachedResultName": "documents"
+        },
+        "topK": 40,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1.3,
+      "position": [
+        448,
+        496
+      ],
+      "id": "aa04f26e-0d81-47f5-aebd-b610a3a25aed",
+      "name": "Supabase Vector Store",
+      "credentials": {
+        "supabaseApi": {
+          "id": "jVAzX8JBHTYOIm2O",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.embeddingsGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        544,
+        704
+      ],
+      "id": "d400c2c0-0c12-4fc1-83de-614d5891423f",
+      "name": "Embeddings Google Gemini",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "PSQno9RbJucPAubR",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Create a row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive Trigger": {
+      "main": [
+        [
+          {
+            "node": "Download file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download file": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase Vector Store": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Google Gemini": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "2b9cf541-1abe-42f4-a23c-d6aca2d4b272",
+  "activeVersionId": null,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2026-06-19T11:47:55.249Z",
+      "createdAt": "2026-06-19T11:47:55.249Z",
+      "role": "workflow:owner",
+      "workflowId": "Z96IeY1nRQ6cVJHb",
+      "projectId": "aB23mWtfYZXjDuh2"
+    }
+  ],
+  "activeVersion": null,
+  "tags": []
+}
